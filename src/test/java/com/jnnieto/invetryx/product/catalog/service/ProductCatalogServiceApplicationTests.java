@@ -1,4 +1,4 @@
-package com.jnnieto.invent.productcatalogservice;
+package com.jnnieto.invetryx.product.catalog.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
