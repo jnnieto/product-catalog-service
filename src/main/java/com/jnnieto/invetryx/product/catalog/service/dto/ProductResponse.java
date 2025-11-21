@@ -1,11 +1,11 @@
 package com.jnnieto.invetryx.product.catalog.service.dto;
 
-public class ProductResponse {
+import java.math.BigDecimal;
 
-    private String name;
-
-    private String description;
-
-    private double price;
-
-}
+public record ProductResponse(
+        String id,
+        String name,
+        String description,
+        BigDecimal price,
+        CategoryResponse category
+) {}

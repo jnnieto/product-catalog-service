@@ -1,7 +1,10 @@
 package com.jnnieto.invetryx.product.catalog.service.services.impl;
 
+import com.jnnieto.invetryx.product.catalog.service.common.exceptions.ResourceConflictException;
 import com.jnnieto.invetryx.product.catalog.service.common.exceptions.ResourceNotFoundException;
-import com.jnnieto.invetryx.product.catalog.service.dto.CreateProductRequest;
+import com.jnnieto.invetryx.product.catalog.service.dto.ProductRequest;
+import com.jnnieto.invetryx.product.catalog.service.dto.ProductResponse;
+import com.jnnieto.invetryx.product.catalog.service.mappers.ProductMapper;
 import com.jnnieto.invetryx.product.catalog.service.models.Category;
 import com.jnnieto.invetryx.product.catalog.service.models.Product;
 import com.jnnieto.invetryx.product.catalog.service.repositories.ProductRepository;
@@ -18,29 +21,30 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final ProductMapper productMapper;
 
     @Override
-    public List<Product> findAll() {
-        return this.productRepository.findAll();
+    public List<ProductResponse> findAll() {
+        return productMapper.toResponseList(productRepository.findAll());
     }
 
     @Override
-    public Product findById(String id) {
-        return this.productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    public ProductResponse findById(String id) {
+        return productMapper.toResponse(productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found")));
     }
 
     @Override
-    public Product save(CreateProductRequest product) {
-        Category category = this.categoryService.getCategory(product.getCategory());
+    public ProductResponse save(ProductRequest request) {
+        Category category = categoryService.getCategory(request.categoryId());
 
-        Product newProduct = Product.builder()
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .category(category)
-                .build();
+        if (productRepository.existsByName(request.name())) {
+            throw new ResourceConflictException("A product with that name already exists.");
+        }
 
-        return this.productRepository.save(newProduct);
+        Product product = productMapper.toEntity(request);
+        product.setCategory(category);
+
+        return productMapper.toResponse(productRepository.save(product));
     }
 }

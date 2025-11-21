@@ -1,16 +1,16 @@
 package com.jnnieto.invetryx.product.catalog.service.services;
 
-import com.jnnieto.invetryx.product.catalog.service.dto.CreateProductRequest;
-import com.jnnieto.invetryx.product.catalog.service.models.Product;
+import com.jnnieto.invetryx.product.catalog.service.dto.ProductRequest;
+import com.jnnieto.invetryx.product.catalog.service.dto.ProductResponse;
 
 import java.util.List;
 
 public interface ProductService {
 
-    List<Product> findAll();
+    List<ProductResponse> findAll();
 
-    Product findById(String id);
+    ProductResponse findById(String id);
 
-    Product save(CreateProductRequest product);
+    ProductResponse save(ProductRequest product);
 
 }

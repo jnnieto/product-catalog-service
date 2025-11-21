@@ -1,5 +1,6 @@
 package com.jnnieto.invetryx.product.catalog.service.services.impl;
 
+import com.jnnieto.invetryx.product.catalog.service.common.exceptions.ResourceConflictException;
 import com.jnnieto.invetryx.product.catalog.service.common.exceptions.ResourceNotFoundException;
 import com.jnnieto.invetryx.product.catalog.service.dto.CategoryRequest;
 import com.jnnieto.invetryx.product.catalog.service.models.Category;
@@ -18,8 +19,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(CategoryRequest category) {
+        if (categoryRepository.existsByName(category.name())) {
+            throw new ResourceConflictException("A category with that name already exists.");
+        }
         Category categoryDb = Category.builder()
-                .name(category.getName())
+                .name(category.name())
                 .build();
         return this.categoryRepository.save(categoryDb);
     }

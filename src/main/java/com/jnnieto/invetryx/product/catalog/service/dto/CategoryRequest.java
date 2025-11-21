@@ -1,10 +1,10 @@
 package com.jnnieto.invetryx.product.catalog.service.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Data
-public class CategoryRequest {
-
-    private String name;
-
-}
+public record CategoryRequest(
+        @NotBlank(message = "Name is required")
+        @Size(max = 50, message = "Name can not exceed 50 characters")
+        String name
+) { }

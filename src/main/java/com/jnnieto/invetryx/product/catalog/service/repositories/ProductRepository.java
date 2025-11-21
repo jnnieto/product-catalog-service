@@ -11,4 +11,6 @@ public interface ProductRepository extends CrudRepository<Product, String> {
 
     List<Product> findAll();
 
+    Boolean existsByName(String name);
+
 }

@@ -2,7 +2,6 @@ package com.jnnieto.invetryx.product.catalog.service.services;
 
 import com.jnnieto.invetryx.product.catalog.service.dto.CategoryRequest;
 import com.jnnieto.invetryx.product.catalog.service.models.Category;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
